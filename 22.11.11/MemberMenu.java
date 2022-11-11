@@ -10,7 +10,7 @@ import com.sh.member.model.dto.Member;
 public class MemberMenu {
 	
 	private Scanner sc = new Scanner(System.in);
-	private MemberController controller = new MemberController(); // DAO에 일을 시킬 컨트롤러
+	private MemberController controller = new MemberController(); 
 	
 
 	public void mainMenu() {
@@ -33,33 +33,33 @@ public class MemberMenu {
 			// n row -> List<Member>
 			// 1 row -> member
 			Member member = null;
-			int result = 0; // dml은 int 반환
+			int result = 0; 
 			List<Member> members = null;
 			String id = null;
 			String searchName = null;
 			
 			switch(choice) {
-			case "1" : // 회원전체조회 : select * from member -- 전체n행
+			case "1" : // 회원전체조회 
 				members = controller.findAll();
 				displayMembers(members);
 				break;
 			
-			case "2" : // 아이디조회 : select * from member where id = ? --- 1행
-				id = inputId("조회"); // 사용자에게 조회할 id 입력받음
-				member = controller.findById(id); // 입력받은 id를 controller에 전달
-				displayMember(member); // 한 건 출력용
+			case "2" : // 아이디조회 : 
+				id = inputId("조회"); 
+				member = controller.findById(id); 
+				displayMember(member); 
 				break; 
 			
-			case "3" : // 이름검색 : select * from member where name like '%abc%' --- n행
+			case "3" : // 이름검색 
 				searchName = inputName("조회");
 				members = controller.findByName(searchName);
 				displayMembers(members);
 				break; 
 			
 			case "4" : // 회원가입
-				member = inputMember(); // Member객체 리턴받기
+				member = inputMember(); 
 				System.out.println("> 입력 회원정보 : " + member);
-				result = controller.insertMember(member); // controller를 통해 DB에 member 추가
+				result = controller.insertMember(member); 
 				displayResult("회원가입", result); 
 				break;
 			
@@ -67,19 +67,19 @@ public class MemberMenu {
 				id = inputId("수정");
 				member = controller.findById(id);
 				displayMember(member);
-				if (member != null) { // 조회결과가 존재할때만 updateMenu 호출
-					updateMenu(member); // 서브메뉴를 만들어서 호출. 이름, 이메일, 생일 수정 					
+				if (member != null) { 
+					updateMenu(member); 				
 				}
 				break;
 			
 			case "6" : // 회원탈퇴 
-				id = inputId("삭제"); // 삭제할 id 입력받기
-				member = controller.findById(id); // member객체를 받아 삭제하는 메서드
+				id = inputId("삭제"); 
+				member = controller.findById(id); 
 				result = controller.deleteMember(member);
 				displayResult("회원탈퇴", result);			
 				break;
 				
-			case "0" : return; // 종료 -> 현재 메소드의 호출부로 리턴 
+			case "0" : return; 
 			default : 
 				System.out.println("> 잘못 입력하셨습니다.");
 			}
@@ -163,8 +163,6 @@ public class MemberMenu {
 
 	/**
 	 * 사용자로부터 조회/삭제할 아이디 조회
-	 * @param string
-	 * @return
 	 */
 	private String inputId(String mode) {
 		System.out.print("> " + mode + "할 아이디 입력 : ");
@@ -210,7 +208,7 @@ public class MemberMenu {
 			System.out.println("--------------------------------------------------------------------------------------------");
 			// for each문
 			for(Member member : members) {
-				System.out.printf("%-10s%-10s%-10s%-20s%-20s%-10s%-10s\n", // %s는 모든 타입을 받을 수 있다. 
+				System.out.printf("%-10s%-10s%-10s%-20s%-20s%-10s%-10s\n", 
 						  member.getId(),
 						  member.getName(),
 						  member.getGender(),
@@ -226,12 +224,12 @@ public class MemberMenu {
 
 
 	private void displayResult(String type, int result) {		
-		System.out.println(type + " " + (result > 0 ? "성공!" : "실패!")); // 처리된 행의 값이 1개이상이면 성공. 
+		System.out.println(type + " " + (result > 0 ? "성공!" : "실패!")); 
 	}
 
 
 	/**
-	 * 사용자로부터 회원정보를 입력받는 메소드 -> Member객체 반환 
+	 * 사용자로부터 회원정보를 입력받는 메소드
 	 */
 	private Member inputMember() {
 		System.out.println("> 새 회원정보를 입력하세요.");
@@ -245,15 +243,13 @@ public class MemberMenu {
 		String gender = sc.next();
 		
 		System.out.print("> 생일(1999-09-09) : ");
-		Date birthday = Date.valueOf(sc.next()); // String타입으로 받아 Date변환
+		Date birthday = Date.valueOf(sc.next()); 
 		
 		System.out.print("> 이메일 : ");
 		String email = sc.next();
-		
-		// point, reg_date은 default로 받을거라 입력 안받아도 ok
 				
 		return new Member(id, name, gender, birthday, email, 0, null);
-													   // point regDate // java는 camelcasing, DB는 _ 언더스코어 
+												
 	}
 
 }
