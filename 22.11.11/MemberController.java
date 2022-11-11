@@ -6,18 +6,9 @@ import java.util.List;
 import com.sh.member.model.dao.MemberDao;
 import com.sh.member.model.dto.Member;
 
-
-/**
- * mvc패턴에서 가장 중요한 부분이 controller  
- * 실제 처리를 맡는 부분 
- */
 public class MemberController {
-	private MemberDao dao = new MemberDao(); // DAO객체에 일을 시킴 -> 
+	private MemberDao dao = new MemberDao(); 
 
-	/**
-	 * MemberMenu로부터 DB에 새 정보 insert 요청 
-	 * 	-> DAO에 전달하는 역할
-	 */
 	public int insertMember(Member member) {
 		int result = dao.insertMember(member);
 		return result;
@@ -38,10 +29,12 @@ public class MemberController {
 		return member;
 	}
 
+	// 이름으로 찾기
 	public List<Member> findByName(String searchName) {
 		List<Member> members = dao.findByName(searchName);
 		return members;
 	}
+	
 	public int updateName(Member member, String newName) {
 		int result = dao.updateName(member, newName);
 		return result;
